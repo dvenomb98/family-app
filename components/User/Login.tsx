@@ -17,6 +17,7 @@ const Login = () => {
   const signInUser = async ({ password, email }: LoginProps): Promise<boolean> => {
     try {
       setError(false);
+      setMessage('');
       await signIn(email, password);
 
       return true;
@@ -35,8 +36,8 @@ const Login = () => {
   };
 
   const LoginSchema = Yup.object().shape({
-    password: Yup.string().min(6, 'Moc krátké!').required('Required'),
-    email: Yup.string().email('Neplatná emailová adresa!').required('Required'),
+    password: Yup.string().min(6, 'Moc krátké!').required('Vyžadováno'),
+    email: Yup.string().email('Neplatná emailová adresa!').required('Vyžadováno'),
   });
 
   return (
@@ -45,17 +46,19 @@ const Login = () => {
         initialValues={{ email: '', password: '' }}
         onSubmit={async (values) => {
           const res = await signInUser(values);
-          res && redirectAfterLogin;
+          res && redirectAfterLogin();
         }}
         validationSchema={LoginSchema}
         key="loginformik"
       >
-        <Form className="flex flex-col gap-5 ">
-          <FormInput name="email" label="Emailová adresa:" placeholder="danielbilek@seznam.cz" />
-          <FormInput name="password" type="password" label="Heslo:" placeholder="****" />
-          {!!message && <Message isError={error} text={message} />}
-          <Button gradient isSubmit text="Přihlásit se" />
-        </Form>
+        {({ isSubmitting }) => (
+          <Form className="flex flex-col gap-5 ">
+            <FormInput name="email" label="Emailová adresa:" placeholder="danielbilek@seznam.cz" />
+            <FormInput name="password" type="password" label="Heslo:" placeholder="****" />
+            {!!message && <Message isError={error} text={message} />}
+            <Button gradient isSubmit loading={isSubmitting} text="Přihlásit se" />
+          </Form>
+        )}
       </Formik>
     </div>
   );

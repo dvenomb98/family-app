@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Background from '../components/Layouts/Background';
 import Container from '../components/Layouts/Container';
 import Login from '../components/User/Login';
@@ -18,6 +18,7 @@ export default function Home() {
             text="Make family great again."
             customStyles="text-headline lg:text-banner my-5 p-2 font-semibold text-center"
           />
+
           <Tab.Group>
             <Tab.List className="flex rounded-md w-full bg-secondary-white dark:bg-secondary-black p-2">
               {Tabs.map((value, index) => (
