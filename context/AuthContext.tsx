@@ -9,7 +9,8 @@ import {
   User,
 } from 'firebase/auth';
 import { auth, db } from '../firebase';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, onSnapshot } from 'firebase/firestore';
+import { UserAccount } from '../components/Types/types';
 
 interface AuthContextProviderProps {
   children: JSX.Element;
@@ -18,8 +19,9 @@ interface AuthContextProviderProps {
 interface AuthContextModel {
   signIn: (email: string, password: string) => Promise<UserCredential>;
   createUser: (email: string, password: string) => Promise<UserCredential>;
-  user: User | null;
+  user: User;
   logout: () => void;
+  userData: UserAccount;
 }
 
 const UserContext = React.createContext<AuthContextModel>({} as AuthContextModel);
@@ -27,6 +29,7 @@ const UserContext = React.createContext<AuthContextModel>({} as AuthContextModel
 export const AuthContextProvider: React.FC<AuthContextProviderProps> = ({ children }) => {
   const [user, setUser] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [userData, setUserData] = useState<any>({});
   // const [userData, setUserData] = useState({});
 
   const signIn = (email: string, password: string) => {
@@ -51,38 +54,16 @@ export const AuthContextProvider: React.FC<AuthContextProviderProps> = ({ childr
     };
   }, []);
 
-  //   // GETTING DATA FROM FB
-
-  //   const getUserData = async () => {
-  //     const docSnap = await getDoc(doc(db, "users", user.uid));
-
-  //     if (docSnap.exists()) {
-  //       setUserData(docSnap.data());
-  //       return true;
-  //     } else {
-  //       return false;
-  //     }
-  //   };
-
-  //     const getMarketPlace = async () => {
-  //       const docSnap = await getDoc(doc(db, "marketplace", MarketPlace.Key));
-
-  //     if (docSnap.exists()) {
-  //       setMarket(docSnap.data());
-  //       return true;
-  //     } else {
-  //       return false;
-  //     }
-  //     };
-
-  //   // Getting user data on app load
-
-  //   useEffect(() => {
-  //     if (user) {
-  //       getUserData()
-  //       getMarketPlace()
-  //     }
-  //   }, [user]);
+  useEffect(() => {
+    if (user) {
+      const unsub = onSnapshot(doc(db, 'users', user.uid), (doc) => {
+        setUserData(doc.data());
+      });
+      return () => {
+        unsub();
+      };
+    }
+  }, [user]);
 
   return (
     <UserContext.Provider
@@ -91,6 +72,7 @@ export const AuthContextProvider: React.FC<AuthContextProviderProps> = ({ childr
         signIn,
         user,
         logout,
+        userData,
       }}
     >
       {!isLoading && children}

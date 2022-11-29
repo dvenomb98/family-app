@@ -2,13 +2,22 @@ import '../styles/globals.css';
 import type { AppProps } from 'next/app';
 import { ThemeProvider } from 'next-themes';
 import { AuthContextProvider } from '../context/AuthContext';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { ModalContextProvider } from '../context/ModalContext';
 
 export default function App({ Component, pageProps }: AppProps) {
+  const [mounted, setMounted] = useState<boolean>(false);
+
+  useEffect(() => setMounted(true), []);
+
+  if (!mounted) return null;
+
   return (
-    <ThemeProvider attribute="class">
+    <ThemeProvider attribute="class" enableSystem={true}>
       <AuthContextProvider>
-        <Component {...pageProps} />
+        <ModalContextProvider>
+          <Component {...pageProps} />
+        </ModalContextProvider>
       </AuthContextProvider>
     </ThemeProvider>
   );

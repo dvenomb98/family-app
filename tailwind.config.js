@@ -18,8 +18,8 @@ module.exports = {
         dancing: 'Dancing Script',
       },
       colors: {
-        'primary-black': '#000000',
-        'secondary-black': '#171717',
+        'primary-black': '#171717',
+        'secondary-black': '#262626 ',
         'primary-white': '#F4F4F9',
         'primary-blue': '#2563eb',
         'primary-red': '#dc2626',

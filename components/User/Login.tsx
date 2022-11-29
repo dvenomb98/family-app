@@ -22,6 +22,7 @@ const Login = () => {
 
       return true;
     } catch (error: any) {
+      console.log(error);
       setError(true);
       setMessage(error.message);
       return false;

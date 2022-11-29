@@ -10,6 +10,13 @@ import { doc, setDoc } from 'firebase/firestore';
 import { db } from '../../firebase';
 import Message from '../Atoms/Message';
 
+// ADD TYPES
+const newUserValues = {
+  members: [],
+  choosed_tasks: [],
+  completed_tasks: [],
+};
+
 const Register = () => {
   const [message, setMessage] = useState<string>('');
   const [error, setError] = useState<boolean>(false);
@@ -43,6 +50,7 @@ const Register = () => {
       await setDoc(doc(db, 'users', user.uid), {
         name: name,
         email: email,
+        ...newUserValues,
       });
 
       return true;
@@ -62,7 +70,7 @@ const Register = () => {
           response && redirectAfterLogin();
         }}
         validationSchema={RegisterSchema}
-        key="loginformik"
+        key="registerformik"
       >
         {({ isSubmitting }) => (
           <Form className="flex flex-col gap-5 ">
