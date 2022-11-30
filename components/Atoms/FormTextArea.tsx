@@ -1,22 +1,28 @@
-import React from 'react';
-import { useField } from 'formik';
 import classNames from 'classnames';
+import { useField } from 'formik';
+import React from 'react';
+import { inputBoxClass, inputClass } from './Input';
 
-export const inputClass =
-  'p-3 outline-primary-blue border dark:border-primary-black rounded-md bg-gray-200 dark:bg-gray-500 placeholder:text-gray-400 ';
-export const inputBoxClass = 'flex flex-col gap-1 ';
-
-const FormInput: React.FC<any> = ({ name, label, placeholder, type, customStyles, ...props }) => {
+const FormTextArea: React.FC<any> = ({
+  name,
+  label,
+  placeholder,
+  customStyles,
+  cols,
+  rows,
+  ...props
+}) => {
   const [field, meta] = useField(name);
   const errorText = meta.error && meta.touched ? meta.error : '';
 
   return (
     <div className={inputBoxClass}>
       {!!label && <label htmlFor="email">{label}</label>}
-      <input
+      <textarea
         {...field}
         {...props}
-        type={type}
+        cols={cols}
+        rows={rows}
         className={classNames(inputClass, customStyles)}
         placeholder={placeholder}
       />
@@ -25,4 +31,4 @@ const FormInput: React.FC<any> = ({ name, label, placeholder, type, customStyles
   );
 };
 
-export default FormInput;
+export default FormTextArea;

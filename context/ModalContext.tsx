@@ -7,7 +7,9 @@ interface ProviderProps {
 const initalValues = {
   hideAllModals: (): void => undefined,
   showNewUserModal: (): void => undefined,
+  showCreateTaskModal: (): void => undefined,
   openNewUserModal: false,
+  openCreateTaskModal: false,
 };
 
 const ModalContext = createContext(initalValues);
@@ -17,13 +19,16 @@ export const ModalContextProvider: React.FC<ProviderProps> = ({ children }) => {
 
   // STATES
   const [openNewUserModal, setOpenNewUserModal] = useState<boolean>(false);
+  const [openCreateTaskModal, setOpenCreateTaskModal] = useState<boolean>(false);
 
   // FUNCTION FOR OPENING EVERY MODAL
   const showNewUserModal = () => setOpenNewUserModal(true);
+  const showCreateTaskModal = () => setOpenCreateTaskModal(true);
 
   // HIDE ALL MODALS
   const hideAllModals = () => {
     setOpenNewUserModal(false);
+    setOpenCreateTaskModal(false);
   };
 
   return (
@@ -32,6 +37,8 @@ export const ModalContextProvider: React.FC<ProviderProps> = ({ children }) => {
         hideAllModals,
         showNewUserModal,
         openNewUserModal,
+        openCreateTaskModal,
+        showCreateTaskModal,
       }}
     >
       {children}

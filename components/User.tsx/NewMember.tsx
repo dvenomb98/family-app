@@ -25,7 +25,6 @@ const NewMember = () => {
   const initialValues: Members = {
     id: nanoid(),
     name: '',
-    completed_tasks: [],
     points: 0,
   };
 
@@ -39,7 +38,7 @@ const NewMember = () => {
         const sfDoc = await transaction.get(ref);
 
         if (!sfDoc.exists()) {
-          throw 'Document does not exist!';
+          return false;
         }
 
         const newMember = [...sfDoc.data().members, values];
@@ -57,6 +56,7 @@ const NewMember = () => {
     <Modal
       open={openNewUserModal}
       title="Přidat uživatele"
+      key="createMemberModal"
       onModalEnter={() => {
         setMessage('');
         setError(false);
@@ -65,9 +65,14 @@ const NewMember = () => {
       <Formik
         initialValues={initialValues}
         validationSchema={NewMemberSchema}
-        onSubmit={async (values) => {
-          const res = await createNewMember(values);
-          res && setMessage('Uživatel byl úspěšně přidán!');
+        onSubmit={async (values, { resetForm }) => {
+          console.log(values);
+          const response = await createNewMember(values);
+
+          if (response) {
+            setMessage('Uživatel byl úspěšně přidán!');
+            resetForm();
+          }
         }}
         key="newuserFormik"
       >
@@ -75,7 +80,9 @@ const NewMember = () => {
           <Form className="flex flex-col gap-5">
             <FormInput name="name" label="Jak se bude jmenovat?" placeholder="Daniel" />
             {!!message && <Message isError={error} text={message} />}
-            <Button isSubmit loading={isSubmitting} text="Vytvořit" />
+            <Button isSubmit loading={isSubmitting}>
+              <>Přidat uživatele</>
+            </Button>
           </Form>
         )}
       </Formik>

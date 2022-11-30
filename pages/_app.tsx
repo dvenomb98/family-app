@@ -4,6 +4,7 @@ import { ThemeProvider } from 'next-themes';
 import { AuthContextProvider } from '../context/AuthContext';
 import React, { useEffect, useState } from 'react';
 import { ModalContextProvider } from '../context/ModalContext';
+import CreateTask from '../components/Tasks/CreateTask';
 
 export default function App({ Component, pageProps }: AppProps) {
   const [mounted, setMounted] = useState<boolean>(false);
@@ -16,7 +17,10 @@ export default function App({ Component, pageProps }: AppProps) {
     <ThemeProvider attribute="class" enableSystem={true}>
       <AuthContextProvider>
         <ModalContextProvider>
-          <Component {...pageProps} />
+          <>
+            <Component {...pageProps} />
+            <CreateTask />
+          </>
         </ModalContextProvider>
       </AuthContextProvider>
     </ThemeProvider>

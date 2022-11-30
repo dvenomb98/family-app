@@ -13,8 +13,7 @@ import Message from '../Atoms/Message';
 // ADD TYPES
 const newUserValues = {
   members: [],
-  choosed_tasks: [],
-  completed_tasks: [],
+  tasks: [],
 };
 
 const Register = () => {
@@ -65,9 +64,12 @@ const Register = () => {
     <div className=" bg-secondary-white dark:bg-secondary-black p-5 rounded-md">
       <Formik
         initialValues={{ email: '', password: '', name: '', repeatPassword: '' }}
-        onSubmit={async (values) => {
+        onSubmit={async (values, { resetForm }) => {
           const response = await createNewUser(values);
-          response && redirectAfterLogin();
+          if (response) {
+            redirectAfterLogin();
+            resetForm();
+          }
         }}
         validationSchema={RegisterSchema}
         key="registerformik"
@@ -84,7 +86,9 @@ const Register = () => {
               placeholder="****"
             />
             {!!message && <Message isError={error} text={message} />}
-            <Button isSubmit loading={isSubmitting} gradient text="Registrovat se" />
+            <Button isSubmit loading={isSubmitting} gradient>
+              <>Registrovat se</>
+            </Button>
           </Form>
         )}
       </Formik>

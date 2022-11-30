@@ -13,14 +13,12 @@ export interface UserAccount {
   name: string;
   email: string;
   members: Members[];
-  choosed_tasks: Task[];
-  completed_tasks: [];
+  tasks: Task[];
 }
 
 export interface Members {
   id: string;
   name: string;
-  completed_tasks: CompletedTasks[];
   points: number;
 }
 
@@ -29,8 +27,10 @@ export interface Task {
   title: string;
   description: string;
   difficulty: string;
-  deadline_date: Date;
-  completed_date: Date | undefined;
+  deadline_date: string;
+  completed_date: string;
+  completed_by: string;
+  assigned_to: string;
   status: string;
 }
 

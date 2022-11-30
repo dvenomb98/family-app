@@ -57,7 +57,9 @@ const Login = () => {
             <FormInput name="email" label="Emailová adresa:" placeholder="danielbilek@seznam.cz" />
             <FormInput name="password" type="password" label="Heslo:" placeholder="****" />
             {!!message && <Message isError={error} text={message} />}
-            <Button gradient isSubmit loading={isSubmitting} text="Přihlásit se" />
+            <Button gradient isSubmit loading={isSubmitting}>
+              <>Přihlásit se</>
+            </Button>
           </Form>
         )}
       </Formik>

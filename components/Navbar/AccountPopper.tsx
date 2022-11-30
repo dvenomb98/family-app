@@ -18,15 +18,15 @@ const AccountPopper = () => {
     <>
       <Popover className="relative">
         {({ open, close }) => (
-          <>
-            <Popover.Button>
+          <div className="flex flex-col items-center">
+            <Popover.Button className="outline-none ">
               <Image
                 src={default_image}
                 width={60}
                 height={60}
                 alt="User account image"
                 className={classNames(
-                  'rounded-full transform duration-500',
+                  'rounded-full transform duration-500 border-primary-blue border-2',
                   open ? 'rotate-12 ' : 'rotate-0',
                 )}
               />
@@ -34,22 +34,23 @@ const AccountPopper = () => {
 
             <Transition
               show={open}
-              enter="transition-opacity duration-500"
-              enterFrom="opacity-0"
+              enter="transition-opacity ease-out duration-300"
+              enterFrom=" opacity-0 "
               enterTo="opacity-100"
-              leave="transition-opacity duration-500"
+              leave="transition-opacity ease-in  duration-200"
               leaveFrom="opacity-100"
               leaveTo="opacity-0"
             >
               <Popover.Overlay className="fixed inset-0 bg-primary-black opacity-50" />
-              <Popover.Panel className="absolute z-50 right-0  bg-secondary-white dark:bg-secondary-black flex flex-col items-start gap-2 p-5 rounded-md lg:w-96">
+              <Popover.Panel className="absolute z-50 right-0  bg-secondary-white dark:bg-secondary-black flex flex-col items-start gap-2 p-5 rounded-md w-72 lg:w-96">
                 <Button
-                  text="Přidat uživatele"
                   onClick={() => {
                     close();
                     showNewUserModal();
                   }}
-                />
+                >
+                  <>Přidat uživatele</>
+                </Button>
 
                 <ul className="w-full">
                   {links?.map((link, index) => (
@@ -63,7 +64,7 @@ const AccountPopper = () => {
                 </ul>
               </Popover.Panel>
             </Transition>
-          </>
+          </div>
         )}
       </Popover>
     </>

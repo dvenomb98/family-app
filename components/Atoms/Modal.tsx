@@ -61,7 +61,9 @@ const Modal: React.FC<ModalProps> = ({
                 )}
               >
                 <Dialog.Title className="font-semibold text-h2">{title}</Dialog.Title>
-                {!!description && <Dialog.Description>{description}</Dialog.Description>}
+                {!!description && (
+                  <Dialog.Description className="font-light">{description}</Dialog.Description>
+                )}
                 {children}
                 {cancelButton && (
                   <XMarkIcon
