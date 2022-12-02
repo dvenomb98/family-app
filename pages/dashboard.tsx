@@ -10,7 +10,7 @@ const Dashboard: NextPage = () => {
     <>
       <Navbar />
       <Background>
-        <Container customStyles="min-h-screen py-16 flex flex-col gap-16">
+        <Container customStyles="min-h-screen py-16 flex flex-col  gap-10 ">
           <>
             <h1 className="text-h1 font-semibold">Aktuální úkoly</h1>
 

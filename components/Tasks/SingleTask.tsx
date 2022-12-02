@@ -12,7 +12,7 @@ import FullPageLoader from '../Atoms/FullPageLoader';
 import { Status } from '../Types/enums';
 import { Task } from '../Types/types';
 import { formatDateUtil } from '../utils/FormatDate';
-import { getDifficulty } from '../utils/getUtils';
+import { getDifficulty, getStatus } from '../utils/getUtils';
 import EditTask from './EditTask';
 import OpenTaskBox from './OpenTaskBox';
 import TaskOptions from './TaskOptions';
@@ -153,6 +153,8 @@ const SingleTask: React.FC<TaskProps> = ({ task }) => {
               <OpenTaskBox label="Popisek:" value={description} />
 
               <OpenTaskBox label="Obtížnost:" value={getDifficulty(difficulty)} />
+
+              <OpenTaskBox label="Status:" value={getStatus(status)} />
 
               {status === Status.Completed && (
                 <>
