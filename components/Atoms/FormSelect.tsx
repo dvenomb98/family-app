@@ -3,10 +3,18 @@ import { useField } from 'formik';
 import classNames from 'classnames';
 
 export const selectClass =
-  'p-3 outline-primary-blue border dark:border-primary-black rounded-md bg-gray-200 dark:bg-gray-500 placeholder:text-gray-400 ';
+  'p-3 outline-primary-blue border dark:border-primary-black rounded-md bg-input-color dark:bg-input-color-dark placeholder:text-primary-dark ';
 export const selectBoxClass = 'flex flex-col gap-1 ';
 
-const FormSelect: React.FC<any> = ({ name, label, options, customStyles, ...props }) => {
+const FormSelect: React.FC<any> = ({
+  name,
+  label,
+  options,
+  customStyles,
+  firstEmpty,
+  emptyLabel,
+  ...props
+}) => {
   const [field, meta] = useField(name);
   const errorText = meta.error && meta.touched ? meta.error : '';
 
@@ -14,9 +22,7 @@ const FormSelect: React.FC<any> = ({ name, label, options, customStyles, ...prop
     <div className={selectBoxClass}>
       {!!label && <label htmlFor="email">{label}</label>}
       <select {...field} {...props} className={classNames(selectClass, customStyles)}>
-        <option selected disabled>
-          Vyberte jednu z možností
-        </option>
+        {firstEmpty && <option value={''}>{emptyLabel}</option>}
         {options.map(({ label, value }: any) => (
           <option key={value} value={value}>
             {label}

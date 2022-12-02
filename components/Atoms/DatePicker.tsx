@@ -4,7 +4,7 @@ import { inputBoxClass } from './Input';
 import classNames from 'classnames';
 
 const datePickerClasses =
-  'outline-primary-blue border dark:border-primary-black  rounded-md  w-full pl-10 p-3 bg-gray-200 dark:bg-gray-500';
+  'outline-primary-blue border dark:border-primary-black  rounded-md  w-full pl-10 p-3 bg-input-color dark:bg-input-color-dark';
 
 const DatePicker: React.FC<any> = ({ name, label, customClasses, ...props }) => {
   const [field, meta] = useField(name);

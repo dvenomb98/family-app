@@ -28,15 +28,16 @@ const CreateTask = () => {
     deadline_date: Yup.string().required('Vyžadováno'),
   });
 
+  if (!userData.members) return null;
+
   const initialValues: Task = {
-    id: nanoid(),
+    id: '',
     title: '',
     description: '',
     deadline_date: '',
     difficulty: Difficulty.Medium,
     completed_date: '',
-    completed_by: '',
-    assigned_to: userData?.members[0]?.id,
+    assigned_to: '',
     status: Status.Active,
   };
 
@@ -58,7 +59,12 @@ const CreateTask = () => {
           return false;
         }
 
-        const newTask = [...sfDoc.data().tasks, values];
+        const generateId = {
+          ...values,
+          id: nanoid(),
+        };
+
+        const newTask = [...sfDoc.data().tasks, generateId];
         transaction.update(ref, { tasks: newTask });
       });
       return true;
@@ -86,7 +92,7 @@ const CreateTask = () => {
         validationSchema={NewTaskSchema}
         onSubmit={async (values, { resetForm }) => {
           const response = await createNewTask(values);
-          console.log(values);
+
           if (response) {
             setMessage('Úkol byl úspěšně vytvořen!');
             resetForm();
@@ -104,7 +110,13 @@ const CreateTask = () => {
               rows={5}
               placeholder="Uklidit nádobí..."
             />
-            <FormSelect name="assigned_to" label="Přirazený člen" options={memberOptions} />
+            <FormSelect
+              firstEmpty
+              emptyLabel={'Nepřirazeno'}
+              name="assigned_to"
+              label="Přirazený člen"
+              options={memberOptions}
+            />
             <FormSelect name="difficulty" label="Obtížnost" options={DifficultyArr} />
             <DatePicker name="deadline_date" label="Deadline" />
             {!!message && <Message isError={error} text={message} />}

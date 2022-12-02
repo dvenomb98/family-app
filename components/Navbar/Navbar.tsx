@@ -5,7 +5,8 @@ import Button from '../Atoms/Button';
 import Background from '../Layouts/Background';
 import Container from '../Layouts/Container';
 import useMobileWidth from '../Layouts/Mobile';
-import NewMember from '../User.tsx/NewMember';
+import CreateTask from '../Tasks/CreateTask';
+import NewMember from '../User/NewMember';
 import AccountPopper from './AccountPopper';
 
 const Navbar = () => {
@@ -36,6 +37,7 @@ const Navbar = () => {
         </Container>
       </Background>
       <NewMember />
+      <CreateTask />
     </>
   );
 };

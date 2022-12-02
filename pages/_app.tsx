@@ -19,7 +19,6 @@ export default function App({ Component, pageProps }: AppProps) {
         <ModalContextProvider>
           <>
             <Component {...pageProps} />
-            <CreateTask />
           </>
         </ModalContextProvider>
       </AuthContextProvider>

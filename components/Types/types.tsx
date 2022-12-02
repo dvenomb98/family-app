@@ -1,3 +1,5 @@
+import { Difficulty } from './enums';
+
 export interface LoginProps {
   password: string;
   email: string;
@@ -29,7 +31,6 @@ export interface Task {
   difficulty: string;
   deadline_date: string;
   completed_date: string;
-  completed_by: string;
   assigned_to: string;
   status: string;
 }

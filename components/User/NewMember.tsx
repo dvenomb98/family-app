@@ -23,7 +23,7 @@ const NewMember = () => {
   });
 
   const initialValues: Members = {
-    id: nanoid(),
+    id: '',
     name: '',
     points: 0,
   };
@@ -41,7 +41,13 @@ const NewMember = () => {
           return false;
         }
 
-        const newMember = [...sfDoc.data().members, values];
+        const member = {
+          id: nanoid(),
+          name: values.name,
+          points: values.points,
+        };
+
+        const newMember = [...sfDoc.data().members, member];
         transaction.update(ref, { members: newMember });
       });
       return true;
@@ -66,7 +72,6 @@ const NewMember = () => {
         initialValues={initialValues}
         validationSchema={NewMemberSchema}
         onSubmit={async (values, { resetForm }) => {
-          console.log(values);
           const response = await createNewMember(values);
 
           if (response) {

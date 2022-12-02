@@ -5,12 +5,13 @@ import React, { Fragment, useRef } from 'react';
 import { useModalContext } from '../../context/ModalContext';
 
 interface ModalProps {
-  title: string;
+  title?: string;
   description?: string;
   children: JSX.Element;
   open: boolean;
   onModalEnter?: () => void;
   cancelButton?: boolean;
+  onClose?: () => void;
 }
 
 const Modal: React.FC<ModalProps> = ({
@@ -20,6 +21,7 @@ const Modal: React.FC<ModalProps> = ({
   open,
   onModalEnter,
   cancelButton,
+  onClose,
 }) => {
   const { hideAllModals } = useModalContext();
   const cancelButtonRef = useRef(null);
@@ -30,7 +32,7 @@ const Modal: React.FC<ModalProps> = ({
         as="div"
         className="relative z-50"
         initialFocus={cancelButtonRef}
-        onClose={hideAllModals}
+        onClose={onClose ? onClose : hideAllModals}
       >
         <Transition.Child
           as={Fragment}
@@ -60,7 +62,7 @@ const Modal: React.FC<ModalProps> = ({
                   'relative overflow-hidden rounded-md text-left w-full sm:max-w-lg bg-primary-white dark:bg-secondary-black p-6 flex flex-col gap-5',
                 )}
               >
-                <Dialog.Title className="font-semibold text-h2">{title}</Dialog.Title>
+                {!!title && <Dialog.Title className="font-semibold text-h2">{title}</Dialog.Title>}
                 {!!description && (
                   <Dialog.Description className="font-light">{description}</Dialog.Description>
                 )}
