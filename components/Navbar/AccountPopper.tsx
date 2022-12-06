@@ -5,12 +5,15 @@ import default_image from '../Images/default_image.webp';
 import classNames from 'classnames';
 import Button from '../Atoms/Button';
 import { useModalContext } from '../../context/ModalContext';
+import { useRouter } from 'next/router';
 
 const AccountPopper = () => {
   const { showNewUserModal } = useModalContext();
+  const router = useRouter();
 
   const links = [
-    { title: 'Můj účet', url: '' },
+    { title: 'Moje úkoly', url: '/dashboard' },
+    { title: 'Můj účet', url: '/account' },
     { title: 'Odhlásit se', url: '' },
   ];
 
@@ -57,6 +60,7 @@ const AccountPopper = () => {
                     <li
                       className="p-2  cursor-pointer w-full hover:bg-primary-white dark:hover:bg-primary-black/30 rounded-md transition-all ease-in-out"
                       key={index}
+                      onClick={() => link.url && router.push(link.url)}
                     >
                       {link.title}
                     </li>
