@@ -8,7 +8,7 @@ interface OptionProps {
   isDisabled: boolean;
 }
 interface TaskOptionsProps {
-  options: OptionProps[];
+  options: OptionProps[] | undefined;
 }
 
 const TaskOptions: React.FC<TaskOptionsProps> = ({ options }) => {

@@ -5,7 +5,7 @@ import {
 } from '@heroicons/react/24/outline';
 import classNames from 'classnames';
 import { doc, runTransaction } from 'firebase/firestore';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { UserAuth } from '../../context/AuthContext';
 import { db } from '../../firebase';
 import FullPageLoader from '../Atoms/FullPageLoader';
@@ -24,6 +24,7 @@ interface TaskProps {
 export enum UpdateTaskValues {
   COMPLETE_TASK = 'COMPLETE_TASK',
   DELETE_TASK = 'DELETE_TASK',
+  START_PROGRESS = 'START_PROGRESS',
 }
 
 const SingleTask: React.FC<TaskProps> = ({ task }) => {
@@ -64,8 +65,8 @@ const SingleTask: React.FC<TaskProps> = ({ task }) => {
           setLoading(false);
           return false;
         }
-
         const data = sfDoc.data();
+
         // COMPLETE TASK
         if (action === UpdateTaskValues.COMPLETE_TASK) {
           const newTaskValues = {
@@ -79,9 +80,21 @@ const SingleTask: React.FC<TaskProps> = ({ task }) => {
 
           transaction.update(ref, { tasks: updatedTasks });
         }
-
+        // DELETE TASK
         if (action === UpdateTaskValues.DELETE_TASK) {
           const updatedTasks = [...data.tasks.filter((t: Task) => t.id !== id)];
+          transaction.update(ref, { tasks: updatedTasks });
+        }
+
+        // START PROGRESS
+
+        if (action === UpdateTaskValues.START_PROGRESS) {
+          const newTaskValues = {
+            ...task,
+            status: Status.Progress,
+          };
+
+          const updatedTasks = [...data.tasks.filter((t: Task) => t.id !== id), newTaskValues];
 
           transaction.update(ref, { tasks: updatedTasks });
         }
@@ -95,23 +108,47 @@ const SingleTask: React.FC<TaskProps> = ({ task }) => {
     }
   };
 
-  const options = [
-    {
-      title: completeAs,
-      func: () => updateTask(UpdateTaskValues.COMPLETE_TASK),
-      isDisabled: !currentMember,
-    },
-    {
-      title: 'Upravit',
-      func: () => setEditModal(true),
-      isDisabled: false,
-    },
-    {
-      title: 'Smazat task',
-      func: () => updateTask(UpdateTaskValues.DELETE_TASK),
-      isDisabled: false,
-    },
-  ];
+  const options = useMemo(() => {
+    if (status === Status.Active) {
+      return [
+        {
+          title: 'Začít',
+          func: () => updateTask(UpdateTaskValues.START_PROGRESS),
+          isDisabled: false,
+        },
+        {
+          title: 'Upravit',
+          func: () => setEditModal(true),
+          isDisabled: false,
+        },
+
+        {
+          title: 'Smazat task',
+          func: () => updateTask(UpdateTaskValues.DELETE_TASK),
+          isDisabled: false,
+        },
+      ];
+    } else if (status === Status.Progress) {
+      return [
+        {
+          title: completeAs,
+          func: () => updateTask(UpdateTaskValues.COMPLETE_TASK),
+          isDisabled: !currentMember,
+        },
+        {
+          title: 'Upravit',
+          func: () => setEditModal(true),
+          isDisabled: false,
+        },
+
+        {
+          title: 'Smazat task',
+          func: () => updateTask(UpdateTaskValues.DELETE_TASK),
+          isDisabled: false,
+        },
+      ];
+    }
+  }, [task, userData]);
 
   return (
     <div className="flex flex-col bg-secondary-white dark:bg-secondary-black  rounded-md ">
