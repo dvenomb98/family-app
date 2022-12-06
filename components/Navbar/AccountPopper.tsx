@@ -16,7 +16,7 @@ const AccountPopper = () => {
 
   return (
     <>
-      <Popover className="relative">
+      <Popover className="relative z-[500]">
         {({ open, close }) => (
           <div className="flex flex-col items-center">
             <Popover.Button className="outline-none ">

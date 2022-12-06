@@ -1,12 +1,9 @@
-import { Listbox } from '@headlessui/react';
 import { XCircleIcon } from '@heroicons/react/24/outline';
 import classNames from 'classnames';
 import React, { useMemo, useState } from 'react';
 import { UserAuth } from '../../context/AuthContext';
 import ListBox from '../Atoms/ListBox';
-import Example from '../Atoms/ListBox';
 import { Status, StatusArr } from '../Types/enums';
-import { Members } from '../Types/types';
 import SingleTask from './SingleTask';
 
 const TaskList = () => {
