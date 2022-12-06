@@ -10,6 +10,11 @@ export enum Status {
   Completed = 'Completed',
 }
 
+export enum FilterByTime {
+  Newest = 'NEWEST',
+  Oldest = 'OLDEST',
+}
+
 export const StatusArr = [
   { label: 'Připraveno', value: Status.Active },
   { label: 'Probíhá', value: Status.Progress },

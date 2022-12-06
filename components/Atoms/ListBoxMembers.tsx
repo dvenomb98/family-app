@@ -1,7 +1,7 @@
 import { Listbox, Transition } from '@headlessui/react';
-import { Dispatch, Fragment, SetStateAction, useRef } from 'react';
+
 import React from 'react';
-import { Members } from '../Types/types';
+
 import classNames from 'classnames';
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/24/outline';
 
@@ -11,12 +11,12 @@ interface ListBoxProps {
   options: any;
 }
 
-const ListBox: React.FC<ListBoxProps> = ({ selectedValue, setSelected, options }) => {
+const ListBoxMembers: React.FC<ListBoxProps> = ({ selectedValue, setSelected, options }) => {
   return (
     <Listbox value={selectedValue} onChange={setSelected}>
-      <Listbox.Button className="bg-secondary-white relative dark:bg-secondary-black p-2 rounded-md w-48">
-        {selectedValue.name}
-        <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+      <Listbox.Button className="bg-secondary-white relative dark:bg-secondary-black p-2 rounded-md w-48 text-left">
+        <span className="ml-2">{selectedValue.name}</span>
+        <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center mr-2">
           <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
         </span>
       </Listbox.Button>
@@ -51,4 +51,4 @@ const ListBox: React.FC<ListBoxProps> = ({ selectedValue, setSelected, options }
   );
 };
 
-export default ListBox;
+export default ListBoxMembers;

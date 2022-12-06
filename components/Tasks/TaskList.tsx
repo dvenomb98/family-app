@@ -2,8 +2,10 @@ import { XCircleIcon } from '@heroicons/react/24/outline';
 import classNames from 'classnames';
 import React, { useMemo, useState } from 'react';
 import { UserAuth } from '../../context/AuthContext';
-import ListBox from '../Atoms/ListBox';
-import { Status, StatusArr } from '../Types/enums';
+import FullPageLoader from '../Atoms/FullPageLoader';
+import ListBoxMembers from '../Atoms/ListBoxMembers';
+import { FilterByTime, Status, StatusArr } from '../Types/enums';
+import { Task } from '../Types/types';
 import SingleTask from './SingleTask';
 
 const TaskList = () => {
@@ -19,7 +21,7 @@ const TaskList = () => {
 
   const [selectedMember, setSelectedMember] = useState(memberOptions[0]);
 
-  return (
+  return userData?.tasks ? (
     <div className="flex flex-col gap-5">
       <div className="flex flex-row w-full lg:w-2/3 rounded-md p-2  shadow-lg items-center justify-between gap-2  dark:bg-secondary-black bg-secondary-white">
         {StatusArr.map(({ value, label }) => (
@@ -39,7 +41,7 @@ const TaskList = () => {
       </div>
       <div>
         {!!memberList.length && (
-          <ListBox
+          <ListBoxMembers
             selectedValue={selectedMember}
             setSelected={setSelectedMember}
             options={memberOptions}
@@ -47,15 +49,22 @@ const TaskList = () => {
         )}
       </div>
       {/* RENDER ALL TASKS WITH FILTER */}
-      {userData?.tasks?.reverse().map((task) => {
-        if (!!selectedMember.value && selectedMember.value !== task.assigned_to) return null;
+      {userData.tasks
+        // .sort((a: Task, b: Task) => {
+        //   if(selectedTime === FilterByTime.Newest) {
+        //   return new Date(a.deadline_date).getTime() - new Date(b.deadline_date).getTime();
+        //   }
+        //   else return new Date(b.deadline_date).getTime() - new Date(a.deadline_date).getTime();
+        // })
+        .map((task: Task) => {
+          if (!!selectedMember.value && selectedMember.value !== task.assigned_to) return null;
 
-        if (selected === task.status) {
-          return <SingleTask key={task?.id} task={task} />;
-        }
-      })}
+          if (selected === task.status) {
+            return <SingleTask key={task?.id} task={task} />;
+          }
+        })}
       {/* NO TASKS */}
-      {!userData?.tasks.length && (
+      {!userData.tasks.length && (
         <div className="flex items-start gap-5 flex-col lg:flex-row">
           <XCircleIcon className="w-10 h-10 text-primary-red" />
           <p className="text-primary-gray">
@@ -65,6 +74,8 @@ const TaskList = () => {
         </div>
       )}
     </div>
+  ) : (
+    <FullPageLoader />
   );
 };
 
