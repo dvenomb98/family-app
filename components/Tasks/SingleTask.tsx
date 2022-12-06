@@ -10,9 +10,9 @@ import { UserAuth } from '../../context/AuthContext';
 import { db } from '../../firebase';
 import FullPageLoader from '../Atoms/FullPageLoader';
 import { Status } from '../Types/enums';
-import { Task } from '../Types/types';
+import { Members, Task } from '../Types/types';
 import { formatDateUtil } from '../utils/FormatDate';
-import { getDifficulty, getStatus } from '../utils/getUtils';
+import { getDifficulty, getPoints, getStatus } from '../utils/getUtils';
 import EditTask from './EditTask';
 import OpenTaskBox from './OpenTaskBox';
 import TaskOptions from './TaskOptions';
@@ -69,16 +69,32 @@ const SingleTask: React.FC<TaskProps> = ({ task }) => {
 
         // COMPLETE TASK
         if (action === UpdateTaskValues.COMPLETE_TASK) {
+          // UPDATE CURRENT TASK
           const newTaskValues = {
             ...task,
             status: Status.Completed,
             completed_date: new Date().toISOString(),
             completed_by: assigned_to,
           };
+          // FIND CURRENT MEMBER FROM FIREBASE
+          const currentMemberData = data.members.find(
+            (member: Members) => member.id === assigned_to,
+          );
 
+          // UPDATE CURRENT MEMBER POINTS BASED ON DIFFICULTY
+          const newMemberValue: Members = {
+            ...currentMemberData,
+            points: currentMemberData.points + getPoints(difficulty),
+          };
+
+          // UPDATE TASK AND MEMBERS
           const updatedTasks = [...data.tasks.filter((t: Task) => t.id !== id), newTaskValues];
+          const updatedMember = [
+            ...data.members.filter((member: Members) => member.id !== assigned_to),
+            newMemberValue,
+          ];
 
-          transaction.update(ref, { tasks: updatedTasks });
+          transaction.update(ref, { tasks: updatedTasks, members: updatedMember });
         }
         // DELETE TASK
         if (action === UpdateTaskValues.DELETE_TASK) {
@@ -87,7 +103,6 @@ const SingleTask: React.FC<TaskProps> = ({ task }) => {
         }
 
         // START PROGRESS
-
         if (action === UpdateTaskValues.START_PROGRESS) {
           const newTaskValues = {
             ...task,

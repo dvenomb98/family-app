@@ -30,7 +30,7 @@ const Modal: React.FC<ModalProps> = ({
     <Transition.Root show={open} as={Fragment} beforeEnter={onModalEnter && onModalEnter}>
       <Dialog
         as="div"
-        className="relative z-50"
+        className="relative z-[999]"
         initialFocus={cancelButtonRef}
         onClose={onClose ? onClose : hideAllModals}
       >

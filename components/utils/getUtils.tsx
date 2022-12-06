@@ -13,3 +13,13 @@ export const getStatus = (status: string) => {
   else if (status === Status.Completed) return 'Dokončeno';
   else return 'Neznámý';
 };
+
+export const getPoints = (difficulty: string) => {
+  if (difficulty === Difficulty.Low) {
+    return 10;
+  } else if (difficulty === Difficulty.Medium) {
+    return 20;
+  } else if (difficulty === Difficulty.Hard) {
+    return 30;
+  }
+};

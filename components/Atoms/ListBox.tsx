@@ -21,7 +21,10 @@ const ListBox: React.FC<ListBoxProps> = ({ selectedValue, setSelected, options }
         </span>
       </Listbox.Button>
       <Transition
-        leave="transition ease-in duration-200"
+        enter="transition-opacity ease-out duration-300"
+        enterFrom=" opacity-0 "
+        enterTo="opacity-100"
+        leave="transition-opacity ease-in  duration-200"
         leaveFrom="opacity-100"
         leaveTo="opacity-0"
       >

@@ -19,5 +19,5 @@ export const StatusArr = [
 export const DifficultyArr = [
   { label: 'Lehká', value: Difficulty.Low },
   { label: 'Střední', value: Difficulty.Medium },
-  { label: 'Těžka', value: Difficulty.Hard },
+  { label: 'Těžká', value: Difficulty.Hard },
 ];

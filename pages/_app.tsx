@@ -14,7 +14,7 @@ export default function App({ Component, pageProps }: AppProps) {
   if (!mounted) return null;
 
   return (
-    <ThemeProvider attribute="class" enableSystem={true}>
+    <ThemeProvider attribute="class" defaultTheme="dark">
       <AuthContextProvider>
         <ModalContextProvider>
           <>
