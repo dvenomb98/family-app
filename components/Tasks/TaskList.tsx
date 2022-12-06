@@ -50,6 +50,7 @@ const TaskList = () => {
       </div>
       {/* RENDER ALL TASKS WITH FILTER */}
       {userData.tasks
+        .reverse()
         // .sort((a: Task, b: Task) => {
         //   if(selectedTime === FilterByTime.Newest) {
         //   return new Date(a.deadline_date).getTime() - new Date(b.deadline_date).getTime();
