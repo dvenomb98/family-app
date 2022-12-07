@@ -17,11 +17,12 @@ const FormSelect: React.FC<any> = ({
 }) => {
   const [field, meta] = useField(name);
   const errorText = meta.error && meta.touched ? meta.error : '';
+  const id = `${name}-${field.name}`;
 
   return (
     <div className={selectBoxClass}>
-      {!!label && <label htmlFor="email">{label}</label>}
-      <select {...field} {...props} className={classNames(selectClass, customStyles)}>
+      {!!label && <label htmlFor={id}>{label}</label>}
+      <select id={id} {...field} {...props} className={classNames(selectClass, customStyles)}>
         {firstEmpty && <option value={''}>{emptyLabel}</option>}
         {options.map(({ label, value }: any) => (
           <option key={value} value={value}>

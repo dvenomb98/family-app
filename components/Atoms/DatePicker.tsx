@@ -9,9 +9,10 @@ const datePickerClasses =
 const DatePicker: React.FC<any> = ({ name, label, customClasses, ...props }) => {
   const [field, meta] = useField(name);
   const errorText = meta.error && meta.touched ? meta.error : '';
+  const id = `${name}-${field.name}`;
   return (
     <div className={inputBoxClass}>
-      {!!label && <label htmlFor="email">{label}</label>}
+      {!!label && <label htmlFor={id}>{label}</label>}
       <div className="relative">
         <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
           <svg
@@ -30,6 +31,7 @@ const DatePicker: React.FC<any> = ({ name, label, customClasses, ...props }) => 
         </div>
         <input
           type="date"
+          id={id}
           {...field}
           {...props}
           className={classNames(datePickerClasses, customClasses)}

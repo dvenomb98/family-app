@@ -14,11 +14,13 @@ const FormTextArea: React.FC<any> = ({
 }) => {
   const [field, meta] = useField(name);
   const errorText = meta.error && meta.touched ? meta.error : '';
+  const id = `${name}-${field.name}`;
 
   return (
     <div className={inputBoxClass}>
-      {!!label && <label htmlFor="email">{label}</label>}
+      {!!label && <label htmlFor={id}>{label}</label>}
       <textarea
+        id={id}
         {...field}
         {...props}
         cols={cols}
