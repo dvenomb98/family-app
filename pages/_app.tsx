@@ -1,7 +1,7 @@
 import '../styles/globals.css';
 import type { AppProps } from 'next/app';
 import { ThemeProvider } from 'next-themes';
-import { AuthContextProvider } from '../context/AuthContext';
+import { AuthContextProvider, UserAuth } from '../context/AuthContext';
 import React, { useEffect, useState } from 'react';
 import { ModalContextProvider } from '../context/ModalContext';
 import CreateTask from '../components/Tasks/CreateTask';

@@ -12,7 +12,7 @@ const AccountPopper = () => {
   const router = useRouter();
 
   const links = [
-    { title: 'Moje úkoly', url: '/dashboard' },
+    { title: 'Nástěnka', url: '/dashboard' },
     { title: 'Můj účet', url: '/account' },
     { title: 'Odhlásit se', url: '' },
   ];

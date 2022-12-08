@@ -26,3 +26,8 @@ export const DifficultyArr = [
   { label: 'Střední', value: Difficulty.Medium },
   { label: 'Těžká', value: Difficulty.Hard },
 ];
+
+export const TimeArr = [
+  { label: 'Od nejnovějších', value: FilterByTime.Newest },
+  { label: 'Od nejstarších', value: FilterByTime.Oldest },
+];

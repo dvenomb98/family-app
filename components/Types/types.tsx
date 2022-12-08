@@ -16,6 +16,7 @@ export interface UserAccount {
   email: string;
   members: Members[];
   tasks: Task[];
+  img?: string;
 }
 
 export interface Members {

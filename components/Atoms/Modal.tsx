@@ -70,7 +70,7 @@ const Modal: React.FC<ModalProps> = ({
                 {cancelButton && (
                   <XMarkIcon
                     className="absolute w-5 h-5 top-6 right-5 cursor-pointer"
-                    onClick={hideAllModals}
+                    onClick={onClose ? onClose : hideAllModals}
                   />
                 )}
               </Dialog.Panel>

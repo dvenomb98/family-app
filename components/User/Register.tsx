@@ -14,6 +14,7 @@ import Message from '../Atoms/Message';
 const newUserValues = {
   members: [],
   tasks: [],
+  img: '',
 };
 
 const Register = () => {

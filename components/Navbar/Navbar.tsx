@@ -26,8 +26,8 @@ const Navbar = () => {
                 customStyles="w-auto rounded-full lg:rounded-md"
               >
                 <>
-                  <PlusIcon className="w-6 h-6" />
-                  {!isMobile && <p>Přidat úkol</p>}
+                  <PlusIcon className="w-5 h-5" />
+                  {!isMobile && <p className="ml-2">Přidat úkol</p>}
                 </>
               </Button>
 
