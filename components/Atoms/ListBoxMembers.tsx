@@ -15,7 +15,7 @@ const ListBoxMembers: React.FC<ListBoxProps> = ({ selectedValue, setSelected, op
   return (
     <Listbox value={selectedValue} onChange={setSelected}>
       <div className="relative">
-        <Listbox.Button className="bg-secondary-white  dark:bg-secondary-black p-2 rounded-md w-48 text-left">
+        <Listbox.Button className="bg-secondary-white relative  dark:bg-secondary-black p-2 rounded-md w-48 text-left">
           <span className="ml-2">{selectedValue.name}</span>
           <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center mr-2">
             <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />

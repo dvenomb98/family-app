@@ -10,6 +10,8 @@ const initalValues = {
   showCreateTaskModal: (): void => undefined,
   openNewUserModal: false,
   openCreateTaskModal: false,
+  openUploadModal: false,
+  showUploadModal: (): void => undefined,
 };
 
 const ModalContext = createContext(initalValues);
@@ -20,15 +22,20 @@ export const ModalContextProvider: React.FC<ProviderProps> = ({ children }) => {
   // STATES
   const [openNewUserModal, setOpenNewUserModal] = useState<boolean>(false);
   const [openCreateTaskModal, setOpenCreateTaskModal] = useState<boolean>(false);
+  const [openUploadModal, setOpenUploadModal] = useState<boolean>(false);
 
   // FUNCTION FOR OPENING EVERY MODAL
   const showNewUserModal = () => setOpenNewUserModal(true);
   const showCreateTaskModal = () => setOpenCreateTaskModal(true);
+  const showUploadModal = () => setOpenUploadModal(true);
 
   // HIDE ALL MODALS
+
   const hideAllModals = () => {
     setOpenNewUserModal(false);
     setOpenCreateTaskModal(false);
+    setOpenUploadModal(false);
+    setOpenUploadModal(false);
   };
 
   return (
@@ -39,6 +46,8 @@ export const ModalContextProvider: React.FC<ProviderProps> = ({ children }) => {
         openNewUserModal,
         openCreateTaskModal,
         showCreateTaskModal,
+        openUploadModal,
+        showUploadModal,
       }}
     >
       {children}

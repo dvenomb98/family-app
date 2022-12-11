@@ -28,6 +28,9 @@ module.exports = {
         'input-color-dark': '#6b7280',
         'input-color': '#e5e7eb',
       },
+      borderRadius: {
+        '-webkit-md': '0.375rem',
+      },
     },
     plugins: [],
   },

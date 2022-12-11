@@ -9,6 +9,7 @@ interface ButtonProps {
   loading?: boolean;
   onClick?: () => void;
   customStyles?: string;
+  disabled?: boolean;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -17,10 +18,12 @@ const Button: React.FC<ButtonProps> = ({
   isSubmit = false,
   loading = false,
   onClick,
+  disabled = false,
   customStyles,
 }) => {
   return (
     <button
+      disabled={disabled}
       onClick={onClick && onClick}
       type={isSubmit ? 'submit' : 'button'}
       className={classNames(
