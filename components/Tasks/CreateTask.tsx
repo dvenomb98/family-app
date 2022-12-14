@@ -64,7 +64,7 @@ const CreateTask = () => {
           id: nanoid(),
         };
 
-        const newTask = [...sfDoc.data().tasks, generateId];
+        const newTask = [generateId, ...sfDoc.data().tasks];
         transaction.update(ref, { tasks: newTask });
       });
       return true;

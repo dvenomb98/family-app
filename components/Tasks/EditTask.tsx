@@ -57,7 +57,7 @@ const EditTask: React.FC<EditTaskProps> = ({ task, openChangeModal, setOpenChang
           deadline_date: values.deadline_date,
         };
 
-        const updatedTasks = [...data.tasks.filter((t: Task) => t.id !== id), newTaskValues];
+        const updatedTasks = [newTaskValues, ...data.tasks.filter((t: Task) => t.id !== id)];
 
         transaction.update(ref, { tasks: updatedTasks });
       });

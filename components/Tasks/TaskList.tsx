@@ -2,6 +2,7 @@ import { XCircleIcon } from '@heroicons/react/24/outline';
 import classNames from 'classnames';
 import React, { useMemo, useState } from 'react';
 import { UserAuth } from '../../context/AuthContext';
+import Button from '../Atoms/Button';
 import FullPageLoader from '../Atoms/FullPageLoader';
 import ListBoxMembers from '../Atoms/ListBoxMembers';
 import { FilterByTime, Status, StatusArr } from '../Types/enums';
@@ -17,9 +18,19 @@ const TaskList = () => {
     value: member.id,
   }));
 
-  const memberOptions = useMemo(() => [{ name: 'Vše', value: '' }, ...memberList], [userData]);
+  const memberOptions = useMemo(
+    () => [{ name: 'Všichni uživatelé', value: '' }, ...memberList],
+    [userData],
+  );
 
   const [selectedMember, setSelectedMember] = useState(memberOptions[0]);
+
+  const currentTasks = userData?.tasks?.filter((task: Task) => {
+    if (selected === task.status) {
+      if (!selectedMember.value) return task;
+      else if (selectedMember.value === task.assigned_to) return task;
+    }
+  });
 
   return userData?.tasks ? (
     <div className="flex flex-col gap-5">
@@ -28,7 +39,7 @@ const TaskList = () => {
           <button
             key={value}
             className={classNames(
-              'p-3 rounded-md text-center cursor-pointer w-full  font-semibold',
+              'p-3 rounded-md text-center cursor-pointer basis-1/3 font-semibold',
               selected === value
                 ? 'text-primary-blue outline outline-primary-blue '
                 : 'hover:bg-input-color dark:hover:bg-input-color-dark/50 transition ease-linear ',
@@ -49,24 +60,24 @@ const TaskList = () => {
         )}
       </div>
       {/* RENDER ALL TASKS WITH FILTER */}
-      {userData.tasks
-        .reverse()
-        // .sort((a: Task, b: Task) => {
-        //   if(selectedTime === FilterByTime.Newest) {
-        //   return new Date(a.deadline_date).getTime() - new Date(b.deadline_date).getTime();
-        //   }
-        //   else return new Date(b.deadline_date).getTime() - new Date(a.deadline_date).getTime();
-        // })
-        .map((task: Task) => {
-          if (!!selectedMember.value && selectedMember.value !== task.assigned_to) return null;
+      {currentTasks.map((task: Task) => (
+        <SingleTask key={task?.id} task={task} />
+      ))}
 
-          if (selected === task.status) {
-            return <SingleTask key={task?.id} task={task} />;
-          }
-        })}
+      {!currentTasks.length && !!userData.tasks.length && (
+        <div className="flex items-start lg:items-center gap-5 flex-col lg:flex-row p-5 ">
+          <XCircleIcon className="w-10 h-10 text-primary-red" />
+          <p className="text-primary-gray">
+            Nenalezen žádný úkol. Zkuste změnit parametry hledání.
+          </p>
+        </div>
+      )}
+
+      {/* PAGINATION */}
+
       {/* NO TASKS */}
       {!userData.tasks.length && (
-        <div className="flex items-start gap-5 flex-col lg:flex-row">
+        <div className="flex items-start lg:items-center gap-5 flex-col lg:flex-row p-5 ">
           <XCircleIcon className="w-10 h-10 text-primary-red" />
           <p className="text-primary-gray">
             Momentálně nemáte žádné úkoly k zobrazení. Založte si svůj první úkol pomocí tlačítka

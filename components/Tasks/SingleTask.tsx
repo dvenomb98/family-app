@@ -88,7 +88,7 @@ const SingleTask: React.FC<TaskProps> = ({ task }) => {
           };
 
           // UPDATE TASK AND MEMBERS
-          const updatedTasks = [...data.tasks.filter((t: Task) => t.id !== id), newTaskValues];
+          const updatedTasks = [newTaskValues, ...data.tasks.filter((t: Task) => t.id !== id)];
           const updatedMember = [
             ...data.members.filter((member: Members) => member.id !== assigned_to),
             newMemberValue,
@@ -109,7 +109,7 @@ const SingleTask: React.FC<TaskProps> = ({ task }) => {
             status: Status.Progress,
           };
 
-          const updatedTasks = [...data.tasks.filter((t: Task) => t.id !== id), newTaskValues];
+          const updatedTasks = [newTaskValues, ...data.tasks.filter((t: Task) => t.id !== id)];
 
           transaction.update(ref, { tasks: updatedTasks });
         }

@@ -6,10 +6,12 @@ import classNames from 'classnames';
 import Button from '../Atoms/Button';
 import { useModalContext } from '../../context/ModalContext';
 import { useRouter } from 'next/router';
+import { UserAuth } from '../../context/AuthContext';
 
 const AccountPopper = () => {
   const { showNewUserModal } = useModalContext();
   const router = useRouter();
+  const { userData } = UserAuth();
 
   const links = [
     { title: 'Nástěnka', url: '/dashboard' },
@@ -23,16 +25,18 @@ const AccountPopper = () => {
         {({ open, close }) => (
           <div className="flex flex-col items-center">
             <Popover.Button className="outline-none ">
-              <Image
-                src={default_image}
-                width={60}
-                height={60}
-                alt="User account image"
-                className={classNames(
-                  'rounded-full transform duration-500 border-primary-blue border-2',
-                  open ? 'rotate-12 ' : 'rotate-0',
-                )}
-              />
+              <div className="overflow-hidden h-[60px] w-[60px] relative">
+                <Image
+                  src={userData?.img || default_image}
+                  fill
+                  sizes="max-w-60 max-h-60"
+                  alt="User account image"
+                  className={classNames(
+                    'rounded-full w-full h-full object-cover transform duration-500 border-primary-blue border-2',
+                    open ? 'rotate-12 ' : 'rotate-0',
+                  )}
+                />
+              </div>
             </Popover.Button>
 
             <Transition
