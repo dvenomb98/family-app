@@ -120,7 +120,7 @@ const CreateTask = () => {
             <FormSelect name="difficulty" label="Obtížnost" options={DifficultyArr} />
             <DatePicker name="deadline_date" label="Deadline" />
             {!!message && <Message isError={error} text={message} />}
-            <Button isSubmit loading={isSubmitting}>
+            <Button disabled={isSubmitting} isSubmit loading={isSubmitting}>
               <>Vytvořit úkol</>
             </Button>
           </Form>

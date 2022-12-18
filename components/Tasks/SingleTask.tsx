@@ -5,7 +5,7 @@ import {
 } from '@heroicons/react/24/outline';
 import classNames from 'classnames';
 import { doc, runTransaction } from 'firebase/firestore';
-import React, { useMemo, useState } from 'react';
+import React, { Dispatch, SetStateAction, useMemo, useState } from 'react';
 import { UserAuth } from '../../context/AuthContext';
 import { db } from '../../firebase';
 import FullPageLoader from '../Atoms/FullPageLoader';
@@ -19,15 +19,17 @@ import TaskOptions from './TaskOptions';
 
 interface TaskProps {
   task: Task;
+  setError: Dispatch<SetStateAction<string>>;
 }
 
 export enum UpdateTaskValues {
   COMPLETE_TASK = 'COMPLETE_TASK',
   DELETE_TASK = 'DELETE_TASK',
   START_PROGRESS = 'START_PROGRESS',
+  STOP_PROGRESS = 'STOP_PROGRESS',
 }
 
-const SingleTask: React.FC<TaskProps> = ({ task }) => {
+const SingleTask: React.FC<TaskProps> = ({ task, setError }) => {
   const { userData, user } = UserAuth();
   const [isOpened, setIsOpened] = useState<boolean>(false);
   const [openEditModal, setEditModal] = useState<boolean>(false);
@@ -55,6 +57,7 @@ const SingleTask: React.FC<TaskProps> = ({ task }) => {
   const updateTask = async (action?: string) => {
     try {
       setLoading(true);
+      setError('');
 
       await runTransaction(db, async (transaction) => {
         const ref = doc(db, 'users', user?.uid);
@@ -63,31 +66,32 @@ const SingleTask: React.FC<TaskProps> = ({ task }) => {
 
         if (!sfDoc.exists()) {
           setLoading(false);
+          setError('Omlouváme se, nastala chyba. Zkuste to znovu.');
           return false;
         }
         const data = sfDoc.data();
 
         // COMPLETE TASK
         if (action === UpdateTaskValues.COMPLETE_TASK) {
-          // UPDATE CURRENT TASK
+          // update current task
           const newTaskValues = {
             ...task,
             status: Status.Completed,
             completed_date: new Date().toISOString(),
             completed_by: assigned_to,
           };
-          // FIND CURRENT MEMBER FROM FIREBASE
+          // find current member from firebase
           const currentMemberData = data.members.find(
             (member: Members) => member.id === assigned_to,
           );
 
-          // UPDATE CURRENT MEMBER POINTS BASED ON DIFFICULTY
+          // update current member and points
           const newMemberValue: Members = {
             ...currentMemberData,
             points: currentMemberData.points + getPoints(difficulty),
           };
 
-          // UPDATE TASK AND MEMBERS
+          // update tasks and members
           const updatedTasks = [newTaskValues, ...data.tasks.filter((t: Task) => t.id !== id)];
           const updatedMember = [
             ...data.members.filter((member: Members) => member.id !== assigned_to),
@@ -113,11 +117,24 @@ const SingleTask: React.FC<TaskProps> = ({ task }) => {
 
           transaction.update(ref, { tasks: updatedTasks });
         }
+
+        //STOP PROGRESS
+        if (action === UpdateTaskValues.STOP_PROGRESS) {
+          const newTaskValues = {
+            ...task,
+            status: Status.Active,
+          };
+
+          const updatedTasks = [newTaskValues, ...data.tasks.filter((t: Task) => t.id !== id)];
+
+          transaction.update(ref, { tasks: updatedTasks });
+        }
       });
 
       setLoading(false);
       return true;
     } catch (error: any) {
+      setError('Omlouváme se, nastala chyba. Zkuste to znovu.');
       setLoading(false);
       return false;
     }
@@ -149,6 +166,11 @@ const SingleTask: React.FC<TaskProps> = ({ task }) => {
           title: completeAs,
           func: () => updateTask(UpdateTaskValues.COMPLETE_TASK),
           isDisabled: !currentMember,
+        },
+        {
+          title: 'Pozastavit',
+          func: () => updateTask(UpdateTaskValues.STOP_PROGRESS),
+          isDisabled: false,
         },
         {
           title: 'Upravit',

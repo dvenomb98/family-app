@@ -114,7 +114,7 @@ const EditTask: React.FC<EditTaskProps> = ({ task, openChangeModal, setOpenChang
               <FormSelect name="difficulty" label="Obtížnost" options={DifficultyArr} />
               <DatePicker name="deadline_date" label="Deadline" />
               {!!message && <Message isError={error} text={message} />}
-              <Button isSubmit loading={isSubmitting}>
+              <Button disabled={isSubmitting} isSubmit loading={isSubmitting}>
                 <>Upravit úkol</>
               </Button>
             </Form>

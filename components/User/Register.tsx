@@ -87,7 +87,7 @@ const Register = () => {
               placeholder="****"
             />
             {!!message && <Message isError={error} text={message} />}
-            <Button isSubmit loading={isSubmitting} gradient>
+            <Button isSubmit disabled={isSubmitting} loading={isSubmitting} gradient>
               <>Registrovat se</>
             </Button>
           </Form>

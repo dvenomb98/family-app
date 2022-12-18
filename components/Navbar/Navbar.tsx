@@ -19,7 +19,7 @@ const Navbar = () => {
       <Background secondaryStyles>
         <Container customStyles="py-3 flex justify-between items-center">
           <>
-            <h1>LOGO</h1>
+            <h1 className="font-bold text-h4">BETA VERSION</h1>
 
             <div className="flex items-center gap-5">
               <Button

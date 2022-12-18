@@ -2,16 +2,17 @@ import { XCircleIcon } from '@heroicons/react/24/outline';
 import classNames from 'classnames';
 import React, { useMemo, useState } from 'react';
 import { UserAuth } from '../../context/AuthContext';
-import Button from '../Atoms/Button';
 import FullPageLoader from '../Atoms/FullPageLoader';
 import ListBoxMembers from '../Atoms/ListBoxMembers';
-import { FilterByTime, Status, StatusArr } from '../Types/enums';
+import Message from '../Atoms/Message';
+import { Status, StatusArr } from '../Types/enums';
 import { Task } from '../Types/types';
 import SingleTask from './SingleTask';
 
 const TaskList = () => {
   const { userData } = UserAuth();
   const [selected, setSelected] = useState<string>(Status.Active);
+  const [error, setError] = useState<string>('');
 
   const memberList = (userData?.members ?? []).map((member) => ({
     name: member.name,
@@ -34,7 +35,8 @@ const TaskList = () => {
 
   return userData?.tasks ? (
     <div className="flex flex-col gap-5">
-      <div className="flex flex-row w-full lg:w-2/3 rounded-md p-2  shadow-lg items-center justify-between gap-2  dark:bg-secondary-black bg-secondary-white">
+      {/* STATUS FILTER */}
+      <div className="flex flex-row w-full rounded-md p-2  shadow-lg items-center justify-between gap-2  dark:bg-secondary-black bg-secondary-white">
         {StatusArr.map(({ value, label }) => (
           <button
             key={value}
@@ -50,18 +52,21 @@ const TaskList = () => {
           </button>
         ))}
       </div>
-      <div>
-        {!!memberList.length && (
-          <ListBoxMembers
-            selectedValue={selectedMember}
-            setSelected={setSelectedMember}
-            options={memberOptions}
-          />
-        )}
-      </div>
+      {/* MEMBER FILTER */}
+      {!!memberList.length && (
+        <ListBoxMembers
+          selectedValue={selectedMember}
+          setSelected={setSelectedMember}
+          options={memberOptions}
+        />
+      )}
+
+      {/* RENDER ERROR */}
+      {!!error && <Message text={error} isError={true} clearMessage={() => setError('')} />}
+
       {/* RENDER ALL TASKS WITH FILTER */}
       {currentTasks.map((task: Task) => (
-        <SingleTask key={task?.id} task={task} />
+        <SingleTask key={task?.id} task={task} setError={setError} />
       ))}
 
       {!currentTasks.length && !!userData.tasks.length && (

@@ -18,7 +18,6 @@ import Toggler from '../components/Atoms/Toggler';
 import UploadFile from '../components/Atoms/UploadFile';
 import { useModalContext } from '../context/ModalContext';
 import Button from '../components/Atoms/Button';
-import FullPageLoader from '../components/Atoms/FullPageLoader';
 
 const boxStyles = 'p-10 bg-secondary-white dark:bg-secondary-black rounded-md flex flex-col gap-5';
 

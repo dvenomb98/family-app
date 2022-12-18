@@ -11,12 +11,12 @@ import { UserAuth } from '../../context/AuthContext';
 const AccountPopper = () => {
   const { showNewUserModal } = useModalContext();
   const router = useRouter();
-  const { userData } = UserAuth();
+  const { userData, logout } = UserAuth();
 
   const links = [
-    { title: 'Nástěnka', url: '/dashboard' },
-    { title: 'Můj účet', url: '/account' },
-    { title: 'Odhlásit se', url: '' },
+    { title: 'Nástěnka', url: '/dashboard', func: undefined },
+    { title: 'Můj účet', url: '/account', func: undefined },
+    { title: 'Odhlásit se', url: '', func: logout },
   ];
 
   return (
@@ -64,7 +64,13 @@ const AccountPopper = () => {
                     <li
                       className="p-2  cursor-pointer w-full hover:bg-primary-white dark:hover:bg-primary-black/30 rounded-md transition-all ease-in-out"
                       key={index}
-                      onClick={() => link.url && router.push(link.url)}
+                      onClick={() => {
+                        if (link.url) {
+                          router.push(link.url);
+                        } else if (link.func) {
+                          link.func();
+                        }
+                      }}
                     >
                       {link.title}
                     </li>

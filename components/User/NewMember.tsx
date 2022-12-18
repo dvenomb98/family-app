@@ -85,7 +85,7 @@ const NewMember = () => {
           <Form className="flex flex-col gap-5">
             <FormInput name="name" label="Jak se bude jmenovat?" placeholder="Daniel" />
             {!!message && <Message isError={error} text={message} />}
-            <Button isSubmit loading={isSubmitting}>
+            <Button isSubmit disabled={isSubmitting} loading={isSubmitting}>
               <>Přidat uživatele</>
             </Button>
           </Form>
