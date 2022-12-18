@@ -29,7 +29,7 @@ const Account: NextPage = () => {
   const [modalData, setModalData] = useState<any>({ tasks: [], memberName: '' });
   const { showUploadModal } = useModalContext();
 
-  const imageBox = isMobile ? 'h-32 w-32 ' : 'h-64 w-64';
+  const imageBox = 'h-[100px] w-[100px] lg:h-[200px] lg:w-[200px]';
 
   return (
     <>
@@ -39,13 +39,13 @@ const Account: NextPage = () => {
           <div className="xl:w-2/3  flex flex-col gap-10 ">
             <h1 className="text-h1 font-semibold">Můj účet</h1>
 
-            <div className="flex gap-5 items-center">
+            <div className="flex gap-5 items-center flex-col sm:flex-row">
               <div className={classNames(imageBox, 'overflow-hidden relative')}>
                 <Image
                   src={userData?.img || default_image}
                   fill
                   priority
-                  sizes="max-w-64 max-h-64"
+                  sizes="max-w-[200px] max-h-[200px]"
                   alt="User account image"
                   className="rounded-full object-cover h-full w-full border-primary-blue border-2"
                 />
@@ -53,7 +53,7 @@ const Account: NextPage = () => {
 
               <GradientText
                 text={userData?.name}
-                customStyles={'text-h1 lg:text-banner font-semibold flex-shrink'}
+                customStyles={' text-h2 lg:text-h1 font-semibold'}
               />
             </div>
 
