@@ -35,7 +35,7 @@ const Register = () => {
   const redirectAfterLogin = () => {
     setMessage('Registrace úspěšná, probíhá přesměrování..');
     setTimeout(() => {
-      router.push('/dashboard');
+      router.push('/member');
     }, 1500);
   };
 

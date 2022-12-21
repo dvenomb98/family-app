@@ -8,11 +8,19 @@ import classNames from 'classnames';
 import GradientText from '../components/Atoms/GradientText';
 import Loader from '../components/Atoms/Loader';
 import { NextPage } from 'next';
+import { UserAuth } from '../context/AuthContext';
+import { useRouter } from 'next/router';
 
 const Tabs = ['Přihlášení', 'Registrace'];
 
 const Home: NextPage = () => {
   const [loaded, setLoaded] = useState<boolean>(false);
+  const { user, loggedMember } = UserAuth();
+  const { push } = useRouter();
+
+  useEffect(() => {
+    if (user && loggedMember) push('/dashboard');
+  }, [user]);
 
   useEffect(() => setLoaded(true), []);
 

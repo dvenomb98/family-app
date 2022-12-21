@@ -23,6 +23,7 @@ export interface Members {
   id: string;
   name: string;
   points: number;
+  img: string;
 }
 
 export interface Task {

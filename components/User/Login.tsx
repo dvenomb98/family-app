@@ -32,7 +32,7 @@ const Login = () => {
   const redirectAfterLogin = () => {
     setMessage('Přihlášení bylo úspěšně, probíhá přesměrování..');
     setTimeout(() => {
-      router.push('/dashboard');
+      router.push('/member');
     }, 1500);
   };
 

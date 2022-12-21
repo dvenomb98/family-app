@@ -7,12 +7,16 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-  const { user } = UserAuth();
+  const { user, loggedMember } = UserAuth();
   const router = useRouter();
 
   useEffect(() => {
     if (!user) router.push('/');
   }, [user]);
+
+  useEffect(() => {
+    if (!loggedMember && user) router.push('/member');
+  }, [loggedMember]);
 
   return children;
 };

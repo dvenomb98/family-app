@@ -12,10 +12,14 @@ import { db } from '../../firebase';
 import { UserAuth } from '../../context/AuthContext';
 import * as Yup from 'yup';
 
-const NewMember = () => {
+interface NewMemberProps {
+  unclosable?: boolean;
+}
+
+const NewMember: React.FC<NewMemberProps> = ({ unclosable }) => {
   const [message, setMessage] = useState<string>('');
   const [error, setError] = useState<boolean>(false);
-  const { openNewUserModal } = useModalContext();
+  const { openNewUserModal, hideAllModals } = useModalContext();
   const { user } = UserAuth();
 
   const NewMemberSchema = Yup.object().shape({
@@ -26,6 +30,7 @@ const NewMember = () => {
     id: '',
     name: '',
     points: 0,
+    img: '',
   };
 
   const createNewMember = async (values: Members) => {
@@ -41,10 +46,11 @@ const NewMember = () => {
           return false;
         }
 
-        const member = {
+        const member: Members = {
           id: nanoid(),
           name: values.name,
           points: values.points,
+          img: '',
         };
 
         const newMember = [...sfDoc.data().members, member];
@@ -61,6 +67,7 @@ const NewMember = () => {
   return (
     <Modal
       open={openNewUserModal}
+      onClose={() => (unclosable ? {} : hideAllModals())}
       title="Přidat uživatele"
       key="createMemberModal"
       onModalEnter={() => {

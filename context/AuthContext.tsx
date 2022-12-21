@@ -1,4 +1,11 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, {
+  createContext,
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -22,6 +29,7 @@ interface AuthContextModel {
   user: User;
   logout: () => void;
   userData: UserAccount;
+  loggedMember: string | null;
 }
 
 const UserContext = React.createContext<AuthContextModel>({} as AuthContextModel);
@@ -30,7 +38,7 @@ export const AuthContextProvider: React.FC<AuthContextProviderProps> = ({ childr
   const [user, setUser] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [userData, setUserData] = useState<any>({});
-  // const [userData, setUserData] = useState({});
+  const [loggedMember, setLoggedMember] = useState<string | null>(null);
 
   const signIn = (email: string, password: string) => {
     return signInWithEmailAndPassword(auth, email, password);
@@ -41,6 +49,9 @@ export const AuthContextProvider: React.FC<AuthContextProviderProps> = ({ childr
   };
 
   const logout = () => {
+    localStorage.removeItem('loggedMember');
+    setLoggedMember(null);
+
     return signOut(auth);
   };
 
@@ -65,6 +76,24 @@ export const AuthContextProvider: React.FC<AuthContextProviderProps> = ({ childr
     }
   }, [user]);
 
+  useEffect(() => {
+    setLoggedMember(localStorage.getItem('loggedMember'));
+
+    window.addEventListener('storage', (event) => {
+      if (event.key === 'loggedMember') {
+        setLoggedMember(event.newValue);
+      }
+    });
+
+    return () => {
+      window.removeEventListener('storage', (event) => {
+        if (event.key === 'loggedMember') {
+          setLoggedMember(event.newValue);
+        }
+      });
+    };
+  }, []);
+
   return (
     <UserContext.Provider
       value={{
@@ -73,6 +102,7 @@ export const AuthContextProvider: React.FC<AuthContextProviderProps> = ({ childr
         user,
         logout,
         userData,
+        loggedMember,
       }}
     >
       {!isLoading && children}
