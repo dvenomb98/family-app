@@ -115,7 +115,7 @@ const Account: NextPage = () => {
                             }}
                             className="text-primary-blue hover:underline underline-offset-4 cursor-pointer"
                           >
-                            {member.completed_tasks} splněných úkolů
+                            {member.completed_tasks || 0} splněných úkolů
                           </p>
                         </div>
                       </div>
