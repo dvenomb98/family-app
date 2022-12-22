@@ -21,7 +21,12 @@ const Login = () => {
       await signIn(email, password);
       return true;
     } catch (error: any) {
-      if (error.code === 'auth/invalid-email' || error.code === 'auth/wrong-password') {
+      console.log(error.code);
+      if (
+        error.code === 'auth/invalid-email' ||
+        error.code === 'auth/wrong-password' ||
+        error.code === 'auth/user-not-found'
+      ) {
         setError(true);
         setMessage('Neplatný email nebo heslo.');
       } else {
