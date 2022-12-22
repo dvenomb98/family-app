@@ -31,6 +31,7 @@ const NewMember: React.FC<NewMemberProps> = ({ unclosable }) => {
     name: '',
     points: 0,
     img: '',
+    completed_tasks: 0,
   };
 
   const createNewMember = async (values: Members) => {
@@ -51,6 +52,7 @@ const NewMember: React.FC<NewMemberProps> = ({ unclosable }) => {
           name: values.name,
           points: values.points,
           img: '',
+          completed_tasks: 0,
         };
 
         const newMember = [...sfDoc.data().members, member];
