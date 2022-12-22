@@ -6,7 +6,7 @@ const Footer = () => {
   return (
     <Background secondaryStyles>
       <Container customStyles="py-16 flex items-center justify-center h–[400px]">
-        <p>Vytvořil: Daniel Bílek.</p>
+        <p>Vytvořil: Daniel Bílek</p>
       </Container>
     </Background>
   );

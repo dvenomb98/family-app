@@ -21,7 +21,6 @@ const Login = () => {
       await signIn(email, password);
       return true;
     } catch (error: any) {
-      console.log(error.code);
       if (
         error.code === 'auth/invalid-email' ||
         error.code === 'auth/wrong-password' ||
@@ -41,7 +40,7 @@ const Login = () => {
     setMessage('Přihlášení bylo úspěšně, probíhá přesměrování..');
     setTimeout(() => {
       router.push('/member');
-    }, 1500);
+    }, 400);
   };
 
   const LoginSchema = Yup.object().shape({

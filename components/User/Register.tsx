@@ -36,7 +36,7 @@ const Register = () => {
     setMessage('Registrace úspěšná, probíhá přesměrování..');
     setTimeout(() => {
       router.push('/member');
-    }, 1500);
+    }, 400);
   };
 
   const createNewUser = async ({ name, email, password }: RegisterProps): Promise<boolean> => {

@@ -24,7 +24,7 @@ const Member: NextPage = () => {
     if (!userData.members) return;
 
     if (!userData.members?.length) showNewUserModal();
-    else hideAllModals();
+    else setTimeout(() => hideAllModals(), 500);
   }, [userData]);
 
   const chooseMember = async (member: Members) => {
@@ -39,50 +39,57 @@ const Member: NextPage = () => {
 
   return userData.members ? (
     <Background customStyles="min-h-screen">
-      <Transition
-        show={loaded}
-        enter="transition-all duration-1000"
-        enterFrom="opacity-0 translate-y-96"
-        enterTo="opacity-100 translate-y-0"
-      >
-        <Container customStyles="py-16 flex flex-col items-center justify-center min-h-screen gap-16">
-          <>
-            {userData.members?.length ? (
-              <>
-                <h1 className="text-h1  text-center lg:text-headline">Kdo se právě přihlásil?</h1>
+      <>
+        <Transition
+          show={loaded}
+          enter="transition-all duration-1000"
+          enterFrom="opacity-0 translate-y-96"
+          enterTo="opacity-100 translate-y-0"
+          leave="transition-all duration-500"
+          leaveFrom="opacity-100 scale-100"
+          leaveTo="opacity-0 scale-[2]"
+        >
+          <Container customStyles="py-16 flex flex-col items-center justify-center min-h-screen gap-16">
+            <>
+              {userData.members?.length ? (
+                <>
+                  <h1 className="text-h1  text-center lg:text-headline">Kdo se právě přihlásil?</h1>
 
-                <div className="flex flex-col gap-10 lg:flex-row items-center justify-center">
-                  {userData.members?.map((member) => (
-                    <div
-                      onClick={async () => {
-                        const res = await chooseMember(member);
-                        res && push('/dashboard');
-                      }}
-                      key={member.id}
-                      className="flex flex-col items-center gap-3 group cursor-pointer"
-                    >
-                      <div className="overflow-hidden h-[150px] w-[150px] relative">
-                        <Image
-                          src={member.img || default_picture}
-                          fill
-                          sizes="max-w-60 max-h-60"
-                          alt="Member profile image"
-                          className="rounded-full w-full h-full object-cover transform duration-500 border-primary-blue border-2 group-hover:border-primary-gray dark:group-hover:border-primary-white"
-                        />
+                  <div className="flex flex-col gap-10 lg:flex-row items-center justify-center">
+                    {userData.members?.map((member) => (
+                      <div
+                        onClick={async () => {
+                          const res = await chooseMember(member);
+                          if (res) {
+                            setLoaded(false);
+                            setTimeout(() => {
+                              push('/dashboard');
+                            }, 500);
+                          }
+                        }}
+                        key={member.id}
+                        className="flex flex-col items-center gap-3 group cursor-pointer"
+                      >
+                        <div className="overflow-hidden h-[150px] w-[150px] relative">
+                          <Image
+                            src={member.img || default_picture}
+                            fill
+                            sizes="max-w-60 max-h-60"
+                            alt="Member profile image"
+                            className="rounded-full w-full h-full object-cover transform duration-500 border-primary-blue border-2 group-hover:border-primary-gray dark:group-hover:border-primary-white"
+                          />
+                        </div>
+                        <p className="text-h3">{member.name}</p>
                       </div>
-                      <p className="text-h3">{member.name}</p>
-                    </div>
-                  ))}
-                </div>
-              </>
-            ) : (
-              <>
-                <NewMember unclosable />
-              </>
-            )}
-          </>
-        </Container>
-      </Transition>
+                    ))}
+                  </div>
+                </>
+              ) : null}
+            </>
+          </Container>
+        </Transition>
+        <NewMember unclosable />
+      </>
     </Background>
   ) : (
     <FullPageLoader />

@@ -61,7 +61,7 @@ const Account: NextPage = () => {
               <AccountBox label={'Jméno účtu'} value={userData?.name} />
               <AccountBox label={'Emailová adresa'} value={userData?.email} />
               <AccountBox
-                label={'Celkový počet všech splněných úkolů'}
+                label={'Dohromady splněné úkoly'}
                 value={userData?.tasks?.filter((task) => task.status === Status.Completed)?.length}
               />
             </div>
