@@ -19,12 +19,15 @@ const Login = () => {
       setError(false);
       setMessage('');
       await signIn(email, password);
-
       return true;
     } catch (error: any) {
-      console.log(error);
-      setError(true);
-      setMessage(error.message);
+      if (error.code === 'auth/invalid-email' || error.code === 'auth/wrong-password') {
+        setError(true);
+        setMessage('Neplatný email nebo heslo.');
+      } else {
+        setError(true);
+        setMessage('Neznámá chyba. Zkuste to prosím později.');
+      }
       return false;
     }
   };

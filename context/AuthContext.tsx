@@ -1,23 +1,15 @@
-import React, {
-  createContext,
-  Dispatch,
-  SetStateAction,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
-  Auth,
   UserCredential,
   User,
 } from 'firebase/auth';
 import { auth, db } from '../firebase';
-import { doc, getDoc, onSnapshot } from 'firebase/firestore';
-import { UserAccount } from '../components/Types/types';
+import { doc, onSnapshot } from 'firebase/firestore';
+import { Members, UserAccount } from '../components/Types/types';
 
 interface AuthContextProviderProps {
   children: JSX.Element;
@@ -29,7 +21,7 @@ interface AuthContextModel {
   user: User;
   logout: () => void;
   userData: UserAccount;
-  loggedMember: string | null;
+  loggedMember: Members | null;
 }
 
 const UserContext = React.createContext<AuthContextModel>({} as AuthContextModel);
@@ -38,7 +30,7 @@ export const AuthContextProvider: React.FC<AuthContextProviderProps> = ({ childr
   const [user, setUser] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [userData, setUserData] = useState<any>({});
-  const [loggedMember, setLoggedMember] = useState<string | null>(null);
+  const [loggedMember, setLoggedMember] = useState<Members | null>(null);
 
   const signIn = (email: string, password: string) => {
     return signInWithEmailAndPassword(auth, email, password);
@@ -50,7 +42,6 @@ export const AuthContextProvider: React.FC<AuthContextProviderProps> = ({ childr
 
   const logout = () => {
     localStorage.removeItem('loggedMember');
-    setLoggedMember(null);
 
     return signOut(auth);
   };
@@ -77,22 +68,22 @@ export const AuthContextProvider: React.FC<AuthContextProviderProps> = ({ childr
   }, [user]);
 
   useEffect(() => {
-    setLoggedMember(localStorage.getItem('loggedMember'));
+    const storedMember = localStorage.getItem('loggedMember');
+    setLoggedMember(storedMember ? JSON.parse(storedMember) : null);
 
-    window.addEventListener('storage', (event) => {
+    const storageEventListener = (event: any) => {
       if (event.key === 'loggedMember') {
-        setLoggedMember(event.newValue);
+        const storedMember = event.newValue;
+        setLoggedMember(storedMember ? JSON.parse(storedMember) : null);
       }
-    });
-
-    return () => {
-      window.removeEventListener('storage', (event) => {
-        if (event.key === 'loggedMember') {
-          setLoggedMember(event.newValue);
-        }
-      });
     };
-  }, []);
+    window.addEventListener('storage', storageEventListener);
+
+    // Remove the event listener when the component unmounts
+    return () => {
+      window.removeEventListener('storage', storageEventListener);
+    };
+  }, [localStorage.getItem('loggedMember')]);
 
   return (
     <UserContext.Provider

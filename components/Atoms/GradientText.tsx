@@ -2,7 +2,7 @@ import React from 'react';
 
 interface GradientTextProps {
   customStyles?: string;
-  text: string;
+  text: string | undefined;
 }
 
 const GradientText: React.FC<GradientTextProps> = ({ customStyles, text }) => {

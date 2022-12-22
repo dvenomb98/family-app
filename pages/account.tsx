@@ -6,8 +6,7 @@ import Background from '../components/Layouts/Background';
 import Container from '../components/Layouts/Container';
 import Navbar from '../components/Navbar/Navbar';
 import { UserAuth } from '../context/AuthContext';
-import default_image from '../components/Images/default_image.webp';
-import useMobileWidth from '../components/Layouts/Mobile';
+import default_picture from '../components/Images/default_picture.png';
 import GradientText from '../components/Atoms/GradientText';
 import AccountBox from '../components/Account/AccountBox';
 import { Members } from '../components/Types/types';
@@ -18,16 +17,17 @@ import Toggler from '../components/Atoms/Toggler';
 import UploadFile from '../components/Atoms/UploadFile';
 import { useModalContext } from '../context/ModalContext';
 import Button from '../components/Atoms/Button';
+import useMobileWidth from '../components/Layouts/Mobile';
 
 const boxStyles = 'p-10 bg-secondary-white dark:bg-secondary-black rounded-md flex flex-col gap-5';
 
 const Account: NextPage = () => {
-  const { userData } = UserAuth();
+  const { userData, loggedMember } = UserAuth();
   const { theme, setTheme } = useTheme();
-  const { isMobile } = useMobileWidth();
   const [openUserModal, setUserModal] = useState(false);
   const [modalData, setModalData] = useState<any>({ tasks: [], memberName: '' });
   const { showUploadModal } = useModalContext();
+  const { isMobile } = useMobileWidth();
 
   const imageBox = 'h-[100px] w-[100px] lg:h-[200px] lg:w-[200px]';
 
@@ -42,7 +42,7 @@ const Account: NextPage = () => {
             <div className="flex gap-5 items-center flex-col sm:flex-row">
               <div className={classNames(imageBox, 'overflow-hidden relative')}>
                 <Image
-                  src={userData?.img || default_image}
+                  src={loggedMember?.img || default_picture}
                   fill
                   priority
                   sizes="max-w-[200px] max-h-[200px]"
@@ -52,7 +52,7 @@ const Account: NextPage = () => {
               </div>
 
               <GradientText
-                text={userData?.name}
+                text={loggedMember?.name}
                 customStyles={' text-h2 lg:text-h1 font-semibold'}
               />
             </div>
@@ -61,7 +61,7 @@ const Account: NextPage = () => {
               <AccountBox label={'Jméno účtu'} value={userData?.name} />
               <AccountBox label={'Emailová adresa'} value={userData?.email} />
               <AccountBox
-                label={'Počet splněných úkolů'}
+                label={'Celkový počet všech splněných úkolů'}
                 value={userData?.tasks?.filter((task) => task.status === Status.Completed)?.length}
               />
             </div>
@@ -82,11 +82,31 @@ const Account: NextPage = () => {
                         key={member.id}
                         className="flex flex-row justify-between items-end border-b pb-2 border-primary-gray"
                       >
-                        <AccountBox
-                          label="Uživatel"
-                          value={member.name}
-                          color={index === 0 ? 'text-yellow-500 dark:text-yellow-400' : ''}
-                        />
+                        {isMobile ? (
+                          <AccountBox
+                            label="Uživatel"
+                            value={member.name}
+                            color={index === 0 ? 'text-yellow-500 dark:text-yellow-400' : ''}
+                          />
+                        ) : (
+                          <div className="flex items-center gap-5">
+                            <div className="overflow-hidden h-[20px] w-[20px] relative lg:h-[40px] lg:w-[40px]">
+                              <Image
+                                src={member?.img || default_picture}
+                                fill
+                                sizes="max-w-10 max-h-10"
+                                alt="User account image"
+                                className="rounded-full w-full h-full object-cover border border-primary-gray"
+                              />
+                            </div>
+                            <AccountBox
+                              label="Uživatel"
+                              value={member.name}
+                              color={index === 0 ? 'text-yellow-500 dark:text-yellow-400' : ''}
+                            />
+                          </div>
+                        )}
+
                         <div className="flex flex-col items-end text-sm lg:text-base">
                           <p className="font-semibold ">{member.points} bodů</p>
                           <p

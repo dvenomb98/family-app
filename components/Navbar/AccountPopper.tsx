@@ -1,7 +1,7 @@
 import { Popover, Transition } from '@headlessui/react';
 import Image from 'next/image';
 import React from 'react';
-import default_image from '../Images/default_image.webp';
+import default_picture from '../Images/default_picture.png';
 import classNames from 'classnames';
 import Button from '../Atoms/Button';
 import { useModalContext } from '../../context/ModalContext';
@@ -11,11 +11,12 @@ import { UserAuth } from '../../context/AuthContext';
 const AccountPopper = () => {
   const { showNewUserModal } = useModalContext();
   const router = useRouter();
-  const { userData, logout } = UserAuth();
+  const { logout, loggedMember } = UserAuth();
 
   const links = [
     { title: 'Nástěnka', url: '/dashboard', func: undefined },
     { title: 'Můj účet', url: '/account', func: undefined },
+    { title: 'Změnit uživatele', url: '/member', func: undefined },
     { title: 'Odhlásit se', url: '', func: logout },
   ];
 
@@ -27,7 +28,7 @@ const AccountPopper = () => {
             <Popover.Button className="outline-none ">
               <div className="overflow-hidden h-[60px] w-[60px] relative">
                 <Image
-                  src={userData?.img || default_image}
+                  src={loggedMember?.img || default_picture}
                   fill
                   sizes="max-w-60 max-h-60"
                   alt="User account image"

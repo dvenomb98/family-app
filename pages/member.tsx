@@ -10,6 +10,7 @@ import NewMember from '../components/User/NewMember';
 import { useModalContext } from '../context/ModalContext';
 import { Transition } from '@headlessui/react';
 import { useRouter } from 'next/router';
+import { Members } from '../components/Types/types';
 
 const Member: NextPage = () => {
   const { userData } = UserAuth();
@@ -26,9 +27,9 @@ const Member: NextPage = () => {
     else hideAllModals();
   }, [userData]);
 
-  const chooseMember = async (id: string) => {
+  const chooseMember = async (member: Members) => {
     try {
-      localStorage.setItem('loggedMember', JSON.stringify(id));
+      localStorage.setItem('loggedMember', JSON.stringify(member));
 
       return true;
     } catch (e) {
@@ -51,25 +52,25 @@ const Member: NextPage = () => {
                 <h1 className="text-h1  text-center lg:text-headline">Kdo se právě přihlásil?</h1>
 
                 <div className="flex flex-col gap-10 lg:flex-row items-center justify-center">
-                  {userData.members?.map(({ name, id, img }) => (
+                  {userData.members?.map((member) => (
                     <div
                       onClick={async () => {
-                        const res = await chooseMember(id);
+                        const res = await chooseMember(member);
                         res && push('/dashboard');
                       }}
-                      key={id}
+                      key={member.id}
                       className="flex flex-col items-center gap-3 group cursor-pointer"
                     >
                       <div className="overflow-hidden h-[150px] w-[150px] relative">
                         <Image
-                          src={img || default_picture}
+                          src={member.img || default_picture}
                           fill
                           sizes="max-w-60 max-h-60"
                           alt="Member profile image"
                           className="rounded-full w-full h-full object-cover transform duration-500 border-primary-blue border-2 group-hover:border-primary-gray dark:group-hover:border-primary-white"
                         />
                       </div>
-                      <p className="text-h3">{name}</p>
+                      <p className="text-h3">{member.name}</p>
                     </div>
                   ))}
                 </div>

@@ -5,6 +5,7 @@ import {
 } from '@heroicons/react/24/outline';
 import classNames from 'classnames';
 import { doc, runTransaction } from 'firebase/firestore';
+import Image from 'next/image';
 import React, { Dispatch, SetStateAction, useMemo, useState } from 'react';
 import { UserAuth } from '../../context/AuthContext';
 import { db } from '../../firebase';
@@ -16,6 +17,7 @@ import { getDifficulty, getPoints, getStatus } from '../utils/getUtils';
 import EditTask from './EditTask';
 import OpenTaskBox from './OpenTaskBox';
 import TaskOptions from './TaskOptions';
+import default_picture from '../Images/default_picture.png';
 
 interface TaskProps {
   task: Task;
@@ -200,9 +202,20 @@ const SingleTask: React.FC<TaskProps> = ({ task, setError }) => {
         </div>
 
         <div className="flex items-center justify-between">
-          <p className="text-primary-gray italic">
-            {currentMember ? `(${currentMember.name})` : 'Nepřirazeno'}
-          </p>
+          <div className=" flex items-center gap-2">
+            <div className="overflow-hidden h-[20px] w-[20px] relative lg:h-[30px] lg:w-[30px]">
+              <Image
+                src={currentMember?.img || default_picture}
+                fill
+                sizes="max-w-10 max-h-10"
+                alt="User account image"
+                className="rounded-full w-full h-full object-cover border border-primary-gray"
+              />
+            </div>
+            <p className="text-primary-gray italic">
+              {currentMember ? `(${currentMember.name})` : '(Nepřirazeno)'}
+            </p>
+          </div>
           <p className="text-primary-gray italic">do {formatDateUtil(deadline_date)}</p>
         </div>
       </div>
