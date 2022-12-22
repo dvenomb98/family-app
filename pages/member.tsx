@@ -22,15 +22,13 @@ const Member: NextPage = () => {
 
   useEffect(() => {
     if (!userData.members) return;
-
-    if (!userData.members?.length) showNewUserModal();
+    else if (!userData.members?.length) showNewUserModal();
     else setTimeout(() => hideAllModals(), 500);
   }, [userData]);
 
   const chooseMember = async (member: Members) => {
     try {
       localStorage.setItem('loggedMember', JSON.stringify(member));
-
       return true;
     } catch (e) {
       return false;
@@ -55,7 +53,7 @@ const Member: NextPage = () => {
                 <>
                   <h1 className="text-h1  text-center lg:text-headline">Kdo se právě přihlásil?</h1>
 
-                  <div className="flex flex-col gap-10 lg:flex-row items-center justify-center">
+                  <div className="grid grid-cols-2 grid-rows-auto gap-10 lg:flex lg:flex-row items-center justify-center">
                     {userData.members?.map((member) => (
                       <div
                         onClick={async () => {
@@ -76,7 +74,7 @@ const Member: NextPage = () => {
                             fill
                             sizes="max-w-60 max-h-60"
                             alt="Member profile image"
-                            className="rounded-full w-full h-full object-cover transform duration-500 border-primary-blue border-2 group-hover:border-primary-gray dark:group-hover:border-primary-white"
+                            className="rounded-full w-full h-full object-cover  border-primary-blue border-2 group-hover:border-primary-gray dark:group-hover:border-primary-white"
                           />
                         </div>
                         <p className="text-h3">{member.name}</p>
