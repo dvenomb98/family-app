@@ -91,6 +91,7 @@ const SingleTask: React.FC<TaskProps> = ({ task, setError }) => {
           const newMemberValue: Members = {
             ...currentMemberData,
             points: currentMemberData.points + getPoints(difficulty),
+            completed_tasks: currentMemberData.completed_tasks + 1,
           };
 
           // update tasks and members

@@ -11,7 +11,6 @@ import NewMember from '../User/NewMember';
 import AccountPopper from './AccountPopper';
 
 const Navbar = () => {
-  const { isMobile } = useMobileWidth();
   const { showCreateTaskModal } = useModalContext();
 
   return (
@@ -22,13 +21,9 @@ const Navbar = () => {
             <h1 className="font-bold text-h4">BETA VERSION</h1>
 
             <div className="flex items-center gap-5">
-              <Button
-                onClick={showCreateTaskModal}
-                customStyles="w-auto rounded-full lg:rounded-md"
-              >
+              <Button onClick={showCreateTaskModal} customStyles="w-auto rounded-full">
                 <>
                   <PlusIcon className="w-5 h-5" />
-                  {!isMobile && <p className="ml-2">Přidat úkol</p>}
                 </>
               </Button>
 

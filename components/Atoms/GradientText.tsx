@@ -2,11 +2,11 @@ import React from 'react';
 
 interface GradientTextProps {
   customStyles?: string;
-  text: string | undefined;
+  text: string | null | undefined;
 }
 
 const GradientText: React.FC<GradientTextProps> = ({ customStyles, text }) => {
-  return <p className={`gradientText ${customStyles}`}>{text}</p>;
+  return text ? <p className={`gradientText ${customStyles}`}>{text}</p> : null;
 };
 
 export default GradientText;

@@ -75,7 +75,6 @@ const Account: NextPage = () => {
                     const finishedTasks = userData.tasks?.filter(
                       (task) => task.status === Status.Completed && task.assigned_to === member.id,
                     );
-                    const finishedTasksLength = finishedTasks.length || 0;
 
                     return (
                       <div
@@ -116,7 +115,7 @@ const Account: NextPage = () => {
                             }}
                             className="text-primary-blue hover:underline underline-offset-4 cursor-pointer"
                           >
-                            {finishedTasksLength} splněných úkolů
+                            {member.completed_tasks} splněných úkolů
                           </p>
                         </div>
                       </div>

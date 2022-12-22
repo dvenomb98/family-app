@@ -5,9 +5,12 @@ import { AuthContextProvider } from '../context/AuthContext';
 import React, { useEffect, useState } from 'react';
 import { ModalContextProvider } from '../context/ModalContext';
 import ProtectedRoute from '../components/User/ProtectedRoute';
+import Footer from '../components/Footer/Footer';
+import { useRouter } from 'next/router';
 
 export default function App({ Component, pageProps }: AppProps) {
   const [mounted, setMounted] = useState<boolean>(false);
+  const router = useRouter();
 
   useEffect(() => setMounted(true), []);
 
@@ -18,7 +21,10 @@ export default function App({ Component, pageProps }: AppProps) {
       <AuthContextProvider>
         <ModalContextProvider>
           <ProtectedRoute>
-            <Component {...pageProps} />
+            <>
+              <Component {...pageProps} />
+              {router.pathname !== '/member' && router.pathname !== '/' && <Footer />}
+            </>
           </ProtectedRoute>
         </ModalContextProvider>
       </AuthContextProvider>

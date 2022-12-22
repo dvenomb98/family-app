@@ -24,6 +24,7 @@ export interface Members {
   name: string;
   points: number;
   img: string;
+  completed_tasks: number;
 }
 
 export interface Task {
