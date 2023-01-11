@@ -12,7 +12,7 @@ import { db } from '../../firebase';
 import FullPageLoader from '../Atoms/FullPageLoader';
 import { Status } from '../Types/enums';
 import { Members, Task } from '../Types/types';
-import { formatDateUtil } from '../utils/FormatDate';
+import { formatDateUtil, isExpired } from '../utils/FormatDate';
 import { getDifficulty, getPoints, getStatus } from '../utils/getUtils';
 import EditTask from './EditTask';
 import OpenTaskBox from './OpenTaskBox';
@@ -52,6 +52,8 @@ const SingleTask: React.FC<TaskProps> = ({ task, setError }) => {
       Pro dokončení přiraďte člena
     </span>
   );
+
+  const isAfteDeadline = isExpired(deadline_date) && status !== Status.Completed;
 
   // IF THE ACTION DOESNT REQUIRE TO EDIT SOME OTHER VALUES AND CAN BE DONE ON 1 USER CLICK, THEN USE UPDATE TASK FUNCTION.
   // IF NOT, USE CUSTOM MODAL AND SEND TASK AS PROP
@@ -191,7 +193,7 @@ const SingleTask: React.FC<TaskProps> = ({ task, setError }) => {
   }, [task, userData]);
 
   return (
-    <div className="flex flex-col bg-secondary-white dark:bg-secondary-black  rounded-md ">
+    <div className="flex flex-col bg-secondary-white dark:bg-secondary-black rounded-md ">
       <div className={classNames(' p-5 flex flex-col gap-2')}>
         <div className="flex items-center justify-between">
           <h2 className="font-semibold lg:text-h4">{title}</h2>
@@ -217,7 +219,14 @@ const SingleTask: React.FC<TaskProps> = ({ task, setError }) => {
               {currentMember ? `(${currentMember.name})` : '(Nepřirazeno)'}
             </p>
           </div>
-          <p className="text-primary-gray italic">do {formatDateUtil(deadline_date)}</p>
+          <p
+            className={classNames(
+              'italic',
+              isAfteDeadline ? 'text-primary-red' : 'text-primary-gray',
+            )}
+          >
+            do {formatDateUtil(deadline_date)}
+          </p>
         </div>
       </div>
 
